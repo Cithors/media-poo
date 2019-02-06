@@ -17,6 +17,9 @@
   function connec(){
     header('location: connec.php');
   }
+  function affm(){
+    header('location: affm.php');
+  }
 ?>
 <html>
   <head>
@@ -31,6 +34,7 @@
       <button type="submit" value="1" name="b">Ajouter film</button>
       <button type="submit" value="2" name="b">Supprimer film</button>
       <button type="submit" value="3" name="b">Afficher film</button>
+      <button type="submit" value="7" name="b">Afficher film (ajoutés par moi)</button>
       <button type="submit" value="4" name="b">Maj film</button>';
     }
     else{
@@ -57,6 +61,9 @@
           }
           if($a==6){
             connec();
+          }
+          if($a==7){
+            affm();
           }
         }
       ?>

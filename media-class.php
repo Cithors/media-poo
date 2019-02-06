@@ -102,7 +102,7 @@ class media{
   }
 
   public function afficher($bdd){
-    $l = $bdd->query('SELECT * FROM films ORDER BY nom');
+    $l = $bdd->query('SELECT nom, annee, realisateur, description FROM films ORDER BY nom');
     if($l != false){
       $l1 = $l->fetchall(PDO::FETCH_ASSOC);
       return $l1;
@@ -112,6 +112,17 @@ class media{
     }
   }
 
+  public function afficherm($bdd){
+    $l0 = $bdd->prepare('SELECT nom, annee, realisateur, description FROM films WHERE user=:user ORDER BY nom');
+    $l = $l0->execute(['user'=>$_COOKIE['user']]);
+    if($l != false){
+      $l1 = $l0->fetchall(PDO::FETCH_ASSOC);
+      return $l1;
+    }
+    else{
+      echo "C'est un fail !";
+    }
+  }
 }
 
 class manager{
@@ -126,8 +137,8 @@ class manager{
   }
 
   public function ajouter(media $media){
-    $r=$this->_bdd->prepare('INSERT INTO films VALUES (:n, :a, :r, :d)');
-    $r->execute(['n'=>$media->getNom(),'a'=>$media->getAnnee(),'r'=>$media->getRea(),'d'=>$media->getDesc()]);
+    $r=$this->_bdd->prepare('INSERT INTO films VALUES (:n, :a, :r, :d, :u)');
+    $r->execute(['n'=>$media->getNom(),'a'=>$media->getAnnee(),'r'=>$media->getRea(),'d'=>$media->getDesc(), 'u'=>$_COOKIE['user']]);
   }
 
 
@@ -152,7 +163,7 @@ class manager{
       $r=$this->_bdd->prepare('INSERT INTO user VALUES (:n, :a)');
       $r->execute(['n'=>$user->getPseudo(),'a'=>$user->getMdp()]);
       echo "L'utilisateur ".$user->getPseudo()." à été inscrit !";
-      setcookie("user","1",time()+120);
+      setcookie("user",$user->getPseudo(),time()+120);
     }
   }
 
@@ -162,8 +173,7 @@ class manager{
     $resultat=$r->fetch();
     if($resultat['mdp']==$user->getMdp()){
       echo 'Utilisateur '.$user->getPseudo().' connecté !';
-      $pseudo = $user->getPseudo();
-      setcookie("user","1",time()+120);
+      setcookie("user",$user->getPseudo(),time()+120);
     }
     else{
       echo 'Connexion impossible, mot de passe incorrect';
