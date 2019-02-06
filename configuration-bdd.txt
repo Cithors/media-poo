@@ -1,0 +1,9 @@
+Base: media-poo
+  -> films
+      -nom
+      -année
+      -réalisateur
+      -description
+  -> user
+      -pseudo
+      -mdp

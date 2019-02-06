@@ -1,0 +1,8 @@
+-maj du film
+
+fait:
+-ajouter film
+-afficher tous les films
+-supprimer film
+-inscrire
+-connexion
